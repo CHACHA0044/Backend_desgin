@@ -30,7 +30,12 @@ app.use(helmet());
 
 // CORS — allow only your frontend origin
 app.use(cors({
-  origin: process.env.CLIENT_ORIGIN || "http://localhost:5173",
+  origin: [
+    "http://localhost:5173",
+    "https://backend-desgin.vercel.app",
+    "https://backend-desgin-qpqm.vercel.app",
+    process.env.CLIENT_ORIGIN
+  ].filter(Boolean),
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -86,6 +91,35 @@ app.use("/api/v1/tasks", taskRoutes);
 // Health check
 app.get("/api/v1/health", (_req, res) => {
   res.json({ success: true, status: "ok", env: process.env.NODE_ENV });
+});
+
+/* ══════════════════════════════════════════════════════
+   SELF-PING SERVICE (Keep Render Alive)
+   ══════════════════════════════════════════════════════ */
+import cron from "node-cron";
+
+// Ping route
+app.get("/ping", (req, res) => {
+  const num = Math.floor(Math.random() * 100);
+  res.json({
+    success: true,
+    msg: "Ping successful",
+    random: num,
+    efficiency: num * num + 5,
+    time: new Date()
+  });
+});
+
+// Cron job: runs every 2 minutes
+cron.schedule("*/2 * * * *", async () => {
+  try {
+    const url = (process.env.RENDER_EXTERNAL_URL || "http://localhost:5000") + "/ping";
+    const res = await fetch(url);
+    const data = await res.json();
+    console.log("⏰ Self ping:", data.efficiency);
+  } catch (err) {
+    console.error("Ping failed:", err.message);
+  }
 });
 
 // 404 handler — must be AFTER all routes
