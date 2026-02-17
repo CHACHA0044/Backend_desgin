@@ -95,13 +95,13 @@ const Field = ({ id, label, type = 'text', value, onChange, onBlur, error, dark,
     >
       <label
         htmlFor={id}
-        className={`text-xs tracking-widest uppercase ${dark ? 'text-white/40' : 'text-black/40'}`}
+        className={`text-xs tracking-widest uppercase ${dark ? 'text-white/60' : 'text-black/60'}`}
         style={{ fontFamily: 'var(--font-mono)' }}
       >
         {label}
       </label>
 
-      <div className={`relative flex items-center rounded-xl border transition-all duration-200 ${borderColor} ${focusRing} ${dark ? 'bg-black/50' : 'bg-white/80'} backdrop-blur-md shadow-sm`}>
+      <div className={`relative flex items-center rounded-xl border transition-all duration-200 ${borderColor} ${focusRing} ${dark ? 'bg-zinc-900/80' : 'bg-white/90'} backdrop-blur-md shadow-sm`}>
         <input
           id={id}
           type={type}
@@ -110,8 +110,8 @@ const Field = ({ id, label, type = 'text', value, onChange, onBlur, error, dark,
           onBlur={onBlur}
           placeholder={placeholder}
           autoComplete={id}
-          className={`w-full bg-transparent px-4 py-3.5 text-sm outline-none placeholder:opacity-60
-            ${dark ? 'text-white' : 'text-black'}`}
+          className={`w-full bg-transparent px-4 py-3.5 text-sm outline-none placeholder:opacity-50
+            ${dark ? 'text-white caret-white' : 'text-black caret-black'}`}
           style={{ fontFamily: 'var(--font-mono)', letterSpacing: '0.04em' }}
         />
         {rightSlot && <div className="pr-3">{rightSlot}</div>}

@@ -93,6 +93,11 @@ app.get("/api/v1/health", (_req, res) => {
   res.json({ success: true, status: "ok", env: process.env.NODE_ENV });
 });
 
+// Root route
+app.get("/", (req, res) => {
+  res.send("Backend running successfully 🚀");
+});
+
 /* ══════════════════════════════════════════════════════
    SELF-PING SERVICE (Keep Render Alive)
    ══════════════════════════════════════════════════════ */
