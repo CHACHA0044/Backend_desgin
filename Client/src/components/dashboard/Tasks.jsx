@@ -266,7 +266,7 @@ const OrderRow = ({ order, dark, isAdmin, onDelete, index }) => {
       </div>
       <span className={`rounded-lg border px-2.5 py-1 text-[10px] font-bold tracking-widest uppercase ${sc.bg} ${sc.text} ${sc.border}`} style={{ fontFamily: 'var(--font-mono)' }}>{order.status}</span>
       <span className={`hidden text-[10px] sm:block ${dark ? 'text-white/25' : 'text-black/25'}`} style={{ fontFamily: 'var(--font-mono)' }}>qty {order.qty}</span>
-      <span className={`hidden text-[10px] md:block ${dark ? 'text-white/25' : 'text-black/25'}`} style={{ fontFamily: 'var(--font-mono)' }}>{fmt(order.placedAt)}</span>
+      <span className={`text-[10px] ${dark ? 'text-white/25' : 'text-black/25'}`} style={{ fontFamily: 'var(--font-mono)' }}>{fmt(order.createdAt || order.placedAt)}</span>
       <button onClick={() => onDelete(order)} className="ml-auto shrink-0 rounded-lg border border-red-400/0 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-red-400/0 opacity-0 transition-all duration-200 group-hover:border-red-400/30 group-hover:text-red-400/80 group-hover:opacity-100 hover:bg-red-400/10" style={{ fontFamily: 'var(--font-mono)' }}>✕</button>
     </motion.div>
   );
@@ -396,7 +396,7 @@ export default function Tasks() {
   };
 
   /* My orders (user view) */
-  const myOrders = orders.filter(o => o.user === 'me@example.com');
+  const myOrders = orders;
 
   /* Derived */
   const bg = dark ? 'bg-black' : 'bg-white';

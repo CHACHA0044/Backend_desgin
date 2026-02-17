@@ -1,97 +1,102 @@
 # Scalable Backend System 🚀
 
-Hey! This is the submission for the **Backend Developer Intern** task. It's a robust, production-ready backend system built with **Node.js, Express, and MongoDB**, paired with a sleek **React** frontend.
-
-I focused heavily on security, modularity, and scalability—making sure the code isn't just "working" but is ready for real-world traffic.
+A robust, production-ready backend system built with **Node.js, Express, and MongoDB**, paired with a sleek **React** frontend. This project demonstrates a scalable architecture with advanced security features, role-based access control, and a modern, responsive UI.
 
 ## 🌟 Key Features
 
-### Backend (The Core)
--   **Authentication**: Secure JWT-based auth with `access` and `refresh` token flow (conceptually prepared, using JWT for now). Passwords are hashed using `bcryptjs`.
--   **Role-Based Access Control (RBAC)**: Distinct permissions for `UserId` vs `Admin`.
--   **Security First**:
-    -   `helmet` for secure HTTP headers.
-    -   `express-rate-limit` to prevent brute-force attacks.
-    -   `xss-clean` & `express-mongo-sanitize` to block injection attacks.
--   **Scalable Structure**: MVC pattern (Models, Views/Routes, Controllers) ensures code is organized and easy to extend.
--   **API Documentation**: Full Swagger UI available at `/api-docs`.
+### Backend Architecture
+-   **Security First**: Implements `helmet` for secure headers, `express-rate-limit` for brute-force protection, and sanitization against XSS/Injection attacks.
+-   **Authentication**: Secure JWT-based authentication with separate `access` and `refresh` token flows.
+-   **RBAC (Role-Based Access Control)**: Granular permissions system distinguishing between Admin and User roles.
+-   **Performance**: Redis caching layer for optimized data retrieval.
+-   **Scalability**: Modular MVC structure designed for easy extension and maintenance.
+-   **Documentation**: Integrated Swagger UI (`/api-docs`) for interactive API testing.
 
-### Frontend (The UI)
--   **Modern Tech**: Built with **React** + **Vite** + **Framer Motion** for smooth animations.
--   **Auth Flow**: Login, Register, and Logout pages connected to the backend.
--   **Dashboard**: A protected route that strictly requires a valid token to access.
--   **Navigation**: Custom animated navigation menu.
+### Frontend Experience
+-   **Modern UI/UX**: Built with **React** and **Tailwind CSS**, featuring a glassmorphic design system.
+-   **Interactivity**: Smooth animations powered by **Framer Motion** and **GSAP**.
+-   **State Management**: Real-time updates for task/order management.
+-   **Dashboard**: Protected, role-aware dashboard interfaces for both Admins and Users.
 
 ---
 
 ## 🛠️ Tech Stack
 
--   **Backend**: Node.js, Express.js
+-   **Runtime**: Node.js
+-   **Framework**: Express.js
 -   **Database**: MongoDB (Mongoose)
--   **Frontend**: React.js, TailwindCSS, GSAP, Framer Motion
--   **Docs**: Swagger (OpenAPI 3.0)
+-   **Caching**: Redis
+-   **Frontend**: React, Vite, TailwindCSS
+-   **Animation**: Framer Motion, GSAP
+-   **Documentation**: Swagger (OpenAPI 3.0)
 
 ---
 
 ## 🏁 Getting Started
 
-Follow these steps to get the project running on your machine.
-
 ### 1. Prerequisites
 -   Node.js (v18+ recommended)
 -   MongoDB (Local or Atlas URI)
+-   Redis Server
 
 ### 2. Backend Setup
-```bash
-# Install dependencies
-npm install
-
-# Create a .env file in the root directory
-# (See .env.example if available, or use the keys below)
-PORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=super_secret_key_change_this
-NODE_ENV=development
-
-# Start the server
-npm run dev
-```
-The server will start at `http://localhost:5000`.
-**API Docs:** Visit `http://localhost:5000/api-docs` to interact with the API.
+1.  Navigate to the root directory.
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+3.  Create a `.env` file in the root directory with the following keys:
+    ```env
+    PORT=5000
+    MONGO_URI=your_mongodb_connection_string
+    JWT_SECRET=your_jwt_secret
+    REDIS_HOST=127.0.0.1
+    REDIS_PORT=6379
+    NODE_ENV=development
+    ```
+4.  Start the development server:
+    ```bash
+    npm run dev
+    ```
+    The server will run at `http://localhost:5000`.
+    **API Docs:** Visit `http://localhost:5000/api-docs`.
 
 ### 3. Frontend Setup
-```bash
-cd Client
-
-# Install dependencies
-npm install
-
-# Start the dev server
-npm run dev
-```
- The UI will launch at `http://localhost:5173`.
+1.  Navigate to the `Client` directory:
+    ```bash
+    cd Client
+    ```
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+3.  Start the frontend server:
+    ```bash
+    npm run dev
+    ```
+    The UI will be accessible at `http://localhost:5173`.
 
 ---
 
 ## 📂 Project Structure
 
-```
-├── config/             # DB configurations
-├── controllers/        # Business logic (Auth, Tasks)
-├── middleware/         # Auth checks, Error handling, Rate limiting
-├── models/             # Mongoose schemas
+```bash
+├── config/             # Database and external service configurations
+├── controllers/        # Business logic for Auth, Tasks, and Data
+├── middleware/         # Security, Auth verification, and Error handling
+├── models/             # Mongoose data schemas
 ├── routes/             # API route definitions
-├── Client/             # React Frontend
-├── app.js              # Express app setup (Middleware, Swagger)
-└── server.js           # Server entry point
+├── Client/             # React Frontend source code
+├── app.js              # Express application setup
+└── server.js           # Entry point
 ```
 
 ## 🧪 Testing
-You can test the APIs using:
-1.  **Swagger UI**: Go to `/api-docs` on the running backend.
-2.  **Postman**: Import the `swagger.yaml` or hit the endpoints directly.
-3.  **Frontend**: Use the Login/Register pages to test the full flow.
+
+-   **Swagger UI**: Interact with endpoints directly at `/api-docs`.
+-   **Postman**: Import `swagger.yaml` for comprehensive testing.
+-   **Frontend Integration**: Use the application UI to test full user flows (Login -> Dashboard -> Tasks).
 
 ---
 
-*Ready to scale!* 🚀
+*Built with scalability and performance in mind.*

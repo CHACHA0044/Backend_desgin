@@ -26,7 +26,7 @@ export const getNavItems = (dark) => {
       links: isLoggedIn
         ? [
           { label: 'Profile', to: '/profile', ariaLabel: 'Profile' },
-          { label: 'Sign Out', action: 'logout', ariaLabel: 'Sign Out' },
+          { label: 'Logout', action: 'logout', ariaLabel: 'Logout' },
         ]
         : [
           { label: 'Login', to: '/login', ariaLabel: 'Login' },
@@ -193,7 +193,7 @@ const CardNav = ({
             localStorage.removeItem('sbs-user');
             // Force re-evaluation of items immediately
             setNavItems(getNavItems(dark));
-            navigate('/login');
+            navigate('/');
           });
         return;
       }
@@ -205,6 +205,7 @@ const CardNav = ({
         console.log('[CardNav] Access denied. Redirecting to login with state.'); // LOGGING
         navigate('/login', { state: { authRequired: true, from: lnk.to } });
         return;
+
       }
 
       // Normal Navigation

@@ -1,5 +1,5 @@
 //src/api/Api.js
-const BASE = '/api/v1';
+const BASE = import.meta.env.VITE_API_URL || '/api/v1';
 
 const headers = (auth = false) => {
   const h = { 'Content-Type': 'application/json' };
