@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import Home     from "./components/Home";
-import Login    from "./components/auth/Login";
+import Home from "./components/Home";
+import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
-import Tasks    from "./components/dashboard/Tasks";
-import Profile  from "./components/dashboard/Profile";
+import Tasks from "./components/dashboard/Tasks";
+import Profile from "./components/dashboard/Profile";
 import { authAPI } from "./api/Api";
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -47,14 +47,14 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/"          element={<Home />} />
-        <Route path="/login"     element={<Login />} />
-        <Route path="/register"  element={<Register />} />
-        <Route path="/logout"    element={<LogoutPage />} />
-        <Route path="/dashboard" element={<Protected><Tasks /></Protected>} />
-        <Route path="/profile"   element={<Protected><Profile /></Protected>} />
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/logout" element={<LogoutPage />} />
+        <Route path="/tasks" element={<Protected><Tasks /></Protected>} />
+        <Route path="/profile" element={<Protected><Profile /></Protected>} />
         {/* Catch-all */}
-        <Route path="*"          element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );

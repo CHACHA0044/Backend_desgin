@@ -1,4 +1,4 @@
-import Dish  from "../models/dish.model.js";
+import Dish from "../models/dish.model.js";
 import Order from "../models/order.model.js";
 import redis from "../config/redis.js";
 
@@ -28,7 +28,7 @@ export const getDishes = async (req, res, next) => {
     const dishes = await Dish.find().sort({ createdAt: -1 }).populate("createdBy", "name email");
 
     /* Store in Redis */
-    await redis.setex(DISHES_CACHE_KEY, CACHE_TTL, JSON.stringify(dishes));
+    await redis.set(DISHES_CACHE_KEY, JSON.stringify(dishes), { EX: CACHE_TTL });
 
     return res.json({ success: true, source: "db", dishes });
   } catch (error) {
@@ -46,7 +46,7 @@ export const getDishById = async (req, res, next) => {
     const dish = await Dish.findById(req.params.id).populate("createdBy", "name email");
     if (!dish) return res.status(404).json({ success: false, message: "Dish not found." });
 
-    await redis.setex(cacheKey, CACHE_TTL, JSON.stringify(dish));
+    await redis.set(cacheKey, JSON.stringify(dish), { EX: CACHE_TTL });
     return res.json({ success: true, source: "db", dish });
   } catch (error) {
     next(error);
@@ -63,9 +63,9 @@ export const createDish = async (req, res, next) => {
     }
 
     const dish = await Dish.create({
-      name:      name.trim(),
+      name: name.trim(),
       description: description.trim(),
-      emoji:     emoji || "🍽️",
+      emoji: emoji || "🍽️",
       createdBy: req.user.id,
     });
 
@@ -85,9 +85,9 @@ export const updateDish = async (req, res, next) => {
     const dish = await Dish.findById(req.params.id);
     if (!dish) return res.status(404).json({ success: false, message: "Dish not found." });
 
-    if (name)        dish.name        = name.trim();
+    if (name) dish.name = name.trim();
     if (description) dish.description = description.trim();
-    if (emoji)       dish.emoji       = emoji;
+    if (emoji) dish.emoji = emoji;
 
     await dish.save();
 
@@ -163,7 +163,7 @@ export const getMyOrders = async (req, res, next) => {
       .sort({ createdAt: -1 })
       .populate("dish", "name emoji");
 
-    await redis.setex(cacheKey, 120, JSON.stringify(orders)); // 2 min cache for orders
+    await redis.set(cacheKey, JSON.stringify(orders), { EX: 120 }); // 2 min cache for orders
     return res.json({ success: true, source: "db", orders });
   } catch (error) {
     next(error);
@@ -182,7 +182,7 @@ export const getAllOrders = async (req, res, next) => {
       .populate("dish", "name emoji")
       .populate("user", "name email");
 
-    await redis.setex(cacheKey, 60, JSON.stringify(orders)); // 1 min cache
+    await redis.set(cacheKey, JSON.stringify(orders), { EX: 60 }); // 1 min cache
     return res.json({ success: true, source: "db", orders });
   } catch (error) {
     next(error);

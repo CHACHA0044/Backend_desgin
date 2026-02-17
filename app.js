@@ -12,6 +12,11 @@ import authRoutes from "./routes/auth.route.js";
 import taskRoutes from "./routes/task.route.js";
 import errorHandler from "./middleware/error.middleware.js";
 
+// Swagger
+import swaggerUi from "swagger-ui-express";
+import YAML from "yamljs";
+const swaggerDocument = YAML.load("./swagger.yaml");
+
 dotenv.config();
 
 const app = express();
@@ -68,9 +73,14 @@ if (process.env.NODE_ENV === "development") {
 }
 
 /* ══════════════════════════════════════════════════════
+   API DOCS
+   ══════════════════════════════════════════════════════ */
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+/* ══════════════════════════════════════════════════════
    API ROUTES  —  versioned under /api/v1
    ══════════════════════════════════════════════════════ */
-app.use("/api/v1/auth",  authRoutes);
+app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/tasks", taskRoutes);
 
 // Health check

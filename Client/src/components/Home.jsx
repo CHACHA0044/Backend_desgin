@@ -13,9 +13,9 @@ import CardNav from '../common/CardNav';
    ════════════════════════════════════════════════════════════════════════════ */
 const CustomCursor = () => {
   const cursorRef = useRef(null);
-  const pos   = useRef({ x: -100, y: -100 });
-  const curr  = useRef({ x: -100, y: -100 });
-  const raf   = useRef(null);
+  const pos = useRef({ x: -100, y: -100 });
+  const curr = useRef({ x: -100, y: -100 });
+  const raf = useRef(null);
 
   useEffect(() => {
     // Only attach on pointer:fine (mouse) devices
@@ -30,8 +30,8 @@ const CustomCursor = () => {
     const onOut = () => cursorRef.current?.classList.remove('hovering');
 
     window.addEventListener('mousemove', onMove, { passive: true });
-    document.addEventListener('mouseover',  onOver);
-    document.addEventListener('mouseout',   onOut);
+    document.addEventListener('mouseover', onOver);
+    document.addEventListener('mouseout', onOut);
 
     // lerp = 0.35 → fast & snappy, no perceived lag
     const LERP = 0.35;
@@ -40,7 +40,7 @@ const CustomCursor = () => {
       curr.current.y += (pos.current.y - curr.current.y) * LERP;
       if (cursorRef.current) {
         cursorRef.current.style.left = `${curr.current.x}px`;
-        cursorRef.current.style.top  = `${curr.current.y}px`;
+        cursorRef.current.style.top = `${curr.current.y}px`;
       }
       raf.current = requestAnimationFrame(tick);
     };
@@ -48,8 +48,8 @@ const CustomCursor = () => {
 
     return () => {
       window.removeEventListener('mousemove', onMove);
-      document.removeEventListener('mouseover',  onOver);
-      document.removeEventListener('mouseout',   onOut);
+      document.removeEventListener('mouseover', onOver);
+      document.removeEventListener('mouseout', onOut);
       cancelAnimationFrame(raf.current);
     };
   }, []);
@@ -68,41 +68,13 @@ const CustomCursor = () => {
 /* ════════════════════════════════════════════════════════════════════════════
    NAV ITEMS
    ════════════════════════════════════════════════════════════════════════════ */
-const getNavItems = (dark) => [
-  {
-    label: 'Navigate',
-    bgColor: dark ? '#0e0e0e' : '#f2f2f2',
-    textColor: dark ? '#fff' : '#000',
-    links: [
-      { label: 'Home',  to: '/',      ariaLabel: 'Home' },
-      { label: 'About', to: '/about', ariaLabel: 'About' },
-    ],
-  },
-  {
-    label: 'Account',
-    bgColor: dark ? '#141414' : '#eaeaea',
-    textColor: dark ? '#fff' : '#000',
-    links: [
-      { label: 'Login',    to: '/login',    ariaLabel: 'Login' },
-      { label: 'Register', to: '/register', ariaLabel: 'Register' },
-    ],
-  },
-  {
-    label: 'Dashboard',
-    bgColor: dark ? '#1a1a1a' : '#e2e2e2',
-    textColor: dark ? '#fff' : '#000',
-    links: [
-      { label: 'Tasks',   to: '/tasks', ariaLabel: 'Tasks' },
-      { label: 'Profile', to: '/profile',   ariaLabel: 'Profile' },
-    ],
-  },
-];
+
 
 /* ════════════════════════════════════════════════════════════════════════════
    ANIMATED COUNTER
    ════════════════════════════════════════════════════════════════════════════ */
 const Counter = ({ to, suffix = '' }) => {
-  const [val, setVal]       = useState(0);
+  const [val, setVal] = useState(0);
   const [started, setStarted] = useState(false);
   const ref = useRef(null);
 
@@ -149,11 +121,11 @@ const Ticker = ({ dark }) => (
    FEATURE CARD
    ════════════════════════════════════════════════════════════════════════════ */
 const FEATURES = [
-  { icon: '🔐', title: 'JWT Auth',      desc: 'Token-based auth with refresh logic and role-based access for user and admin roles.' },
-  { icon: '⚡', title: 'REST API',      desc: 'Versioned endpoints with proper status codes, validation middleware, and clean error handling.' },
+  { icon: '🔐', title: 'JWT Auth', desc: 'Token-based auth with refresh logic and role-based access for user and admin roles.' },
+  { icon: '⚡', title: 'REST API', desc: 'Versioned endpoints with proper status codes, validation middleware, and clean error handling.' },
   { icon: '🛡️', title: 'Sanitization', desc: 'Every request validated at middleware level. SQL injection and XSS mitigated by default.' },
-  { icon: '🗄️', title: 'DB Schema',    desc: 'Clean relational schema with migrations. Postgres-ready, swappable for MongoDB.' },
-  { icon: '📦', title: 'Modular',       desc: 'Scalable folder architecture — new modules plug in without touching existing code.' },
+  { icon: '🗄️', title: 'DB Schema', desc: 'Clean relational schema with migrations. Postgres-ready, swappable for MongoDB.' },
+  { icon: '📦', title: 'Modular', desc: 'Scalable folder architecture — new modules plug in without touching existing code.' },
   { icon: '📡', title: 'Swagger Docs', desc: 'Auto-generated API docs at /api-docs. Test every endpoint without leaving your browser.' },
 ];
 
@@ -163,15 +135,14 @@ const FeatureCard = ({ icon, title, desc, delay, dark }) => (
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: '-50px' }}
     transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
-    className={`feature-card group relative overflow-hidden rounded-2xl border p-6 ${
-      dark
+    className={`feature-card group relative overflow-hidden rounded-2xl border p-6 ${dark
         ? 'border-white/8 bg-white/[0.03] hover:border-white/15'
         : 'border-black/8 bg-black/[0.03] hover:border-black/15'
-    }`}
+      }`}
   >
     <div className="mb-4 text-2xl leading-none">{icon}</div>
     <h3 className={`mb-2 text-sm font-semibold tracking-wide ${dark ? 'text-white' : 'text-black'}`}
-        style={{ fontFamily: 'var(--font-mono)' }}>
+      style={{ fontFamily: 'var(--font-mono)' }}>
       {title}
     </h3>
     <p className={`text-sm leading-relaxed ${dark ? 'text-white/45' : 'text-black/45'}`}>{desc}</p>
@@ -183,7 +154,7 @@ const FeatureCard = ({ icon, title, desc, delay, dark }) => (
    HOME
    ════════════════════════════════════════════════════════════════════════════ */
 export default function Home() {
-  const [dark,    setDark]    = useState(true);
+  const [dark, setDark] = useState(true);
   const [navOpen, setNavOpen] = useState(false);
 
   /* ── Fix 3: smooth theme transition via class on <html> ──────────────── */
@@ -205,13 +176,13 @@ export default function Home() {
   /* ── Parallax hero ───────────────────────────────────────────────────── */
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
-  const heroY       = useTransform(scrollYProgress, [0, 1],    ['0%', '22%']);
+  const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '22%']);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
 
-  const bg     = dark ? 'bg-black'      : 'bg-white';
-  const text   = dark ? 'text-white'    : 'text-black';
-  const border = dark ? 'border-white/8': 'border-black/8';
-  const muted  = dark ? 'text-white/40' : 'text-black/40';
+  const bg = dark ? 'bg-black' : 'bg-white';
+  const text = dark ? 'text-white' : 'text-black';
+  const border = dark ? 'border-white/8' : 'border-black/8';
+  const muted = dark ? 'text-white/40' : 'text-black/40';
 
   return (
     <div className={`relative min-h-screen overflow-x-hidden transition-colors duration-500 ${bg} ${text}`}>
@@ -219,21 +190,16 @@ export default function Home() {
       <div className="grain-overlay" aria-hidden="true" />
 
       {/* ── Backdrop blur overlay — click outside to close nav ─────────── */}
-      <div
-        className={`nav-backdrop ${navOpen ? 'active' : ''} ${navOpen && !dark ? 'light' : ''}`}
-        onClick={() => window.__sbsCloseNav?.()}
-        aria-hidden="true"
-      />
+
 
       {/* Custom cursor — always white; mix-blend-mode handles visibility */}
       <CustomCursor />
 
-      
+
 
       {/* ── Card Nav ────────────────────────────────────────────────────── */}
       <CardNav
         logoText="SBS"
-        items={getNavItems(dark)}
         dark={dark}
         ease="power3.out"
         onOpenChange={setNavOpen}
@@ -278,27 +244,27 @@ export default function Home() {
             transition={{ duration: 0.65, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className={`mb-10 max-w-sm text-base leading-relaxed ${muted}`}
           >
-           Backend infrastructure made simple — secure auth, role control, and scalable APIs out of the box.
+            Backend infrastructure made simple — secure auth, role control, and scalable APIs out of the box.
           </motion.p>
 
           {/* CTAs */}
-        <motion.div
-        initial={{ opacity: 0, y: 18 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
-        className="flex flex-col items-center gap-3 sm:flex-row"
-        >
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col items-center gap-3 sm:flex-row"
+          >
 
-        {/* Reusable Button Style */}
-        {[
-            { to: "/register", label: "Register" },
-            { to: "/login", label: "Sign In" },
-            { to: "/about", label: "About" },
-        ].map((btn, i) => (
-            <Link
-            key={i}
-            to={btn.to}
-            className={`
+            {/* Reusable Button Style */}
+            {[
+              { to: "/register", label: "Register" },
+              { to: "/login", label: "Sign In" },
+              { to: "/about", label: "About" },
+            ].map((btn, i) => (
+              <Link
+                key={i}
+                to={btn.to}
+                className={`
                 group relative overflow-hidden
                 w-44 text-center
                 rounded-xl border
@@ -306,37 +272,37 @@ export default function Home() {
                 text-sm font-semibold tracking-widest uppercase
                 transition-all duration-300
                 ${dark
-                ? "border-white/20 text-white"
-                : "border-black/20 text-black"}
+                    ? "border-white/20 text-white"
+                    : "border-black/20 text-black"}
             `}
-            style={{ fontFamily: "var(--font-mono)" }}
-            >
-            {/* Animated Background */}
-            <span
-                className={`
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                {/* Animated Background */}
+                <span
+                  className={`
                 absolute inset-0 scale-x-0 origin-left
                 transition-transform duration-300
                 group-hover:scale-x-100
                 ${dark ? "bg-white" : "bg-black"}
                 `}
-            />
+                />
 
-            {/* Text */}
-            <span
-                className={`
+                {/* Text */}
+                <span
+                  className={`
                 relative z-10 transition-colors duration-300
                 ${dark
-                    ? "group-hover:text-black"
-                    : "group-hover:text-white"}
+                      ? "group-hover:text-black"
+                      : "group-hover:text-white"}
                 `}
-            >
-                {btn.label}
-            </span>
-            </Link>
+                >
+                  {btn.label}
+                </span>
+              </Link>
 
-        ))}
+            ))}
 
-        </motion.div>
+          </motion.div>
 
         </motion.div>
 
@@ -364,9 +330,9 @@ export default function Home() {
         <div className={`pointer-events-none absolute inset-0 ${dark ? 'grid-bg-dark' : 'grid-bg'} opacity-40`} aria-hidden="true" />
         <div className="relative z-10 mx-auto grid max-w-3xl grid-cols-2 gap-4 md:grid-cols-4">
           {[
-            { value: 99,  suffix: '%', label: 'Uptime' },
-            { value: 12,  suffix: '+', label: 'Endpoints' },
-            { value: 3,   suffix: '',  label: 'Auth Roles' },
+            { value: 99, suffix: '%', label: 'Uptime' },
+            { value: 12, suffix: '+', label: 'Endpoints' },
+            { value: 3, suffix: '', label: 'Auth Roles' },
             { value: 256, suffix: 'b', label: 'AES Encrypt' },
           ].map(({ value, suffix, label }, i) => (
             <motion.div

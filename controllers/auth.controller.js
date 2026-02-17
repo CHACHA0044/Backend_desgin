@@ -14,10 +14,10 @@ const sendToken = (res, statusCode, user, token) => {
     success: true,
     token,
     user: {
-      id:    user._id,
-      name:  user.name,
+      id: user._id,
+      name: user.name,
       email: user.email,
-      role:  user.role,
+      role: user.role,
     },
   });
 };
@@ -45,10 +45,10 @@ export const register = async (req, res, next) => {
     const token = signToken({ id: user._id, role: user.role });
 
     /* Cache the user profile in Redis for 1 h */
-    await redis.setex(
+    await redis.set(
       `user:${user._id}`,
-      3600,
-      JSON.stringify({ id: user._id, name: user.name, email: user.email, role: user.role })
+      JSON.stringify({ id: user._id, name: user.name, email: user.email, role: user.role }),
+      { EX: 3600 }
     );
 
     return sendToken(res, 201, user, token);
@@ -86,10 +86,10 @@ export const login = async (req, res, next) => {
     const token = signToken({ id: user._id, role: user.role });
 
     /* Refresh Redis cache on login */
-    await redis.setex(
+    await redis.set(
       `user:${user._id}`,
-      3600,
-      JSON.stringify({ id: user._id, name: user.name, email: user.email, role: user.role })
+      JSON.stringify({ id: user._id, name: user.name, email: user.email, role: user.role }),
+      { EX: 3600 }
     );
 
     return sendToken(res, 200, user, token);
@@ -117,7 +117,7 @@ export const logout = async (req, res, next) => {
 
     if (ttl > 0) {
       /* Store token in blacklist until it naturally expires */
-      await redis.setex(`blacklist:${token}`, ttl, "1");
+      await redis.set(`blacklist:${token}`, "1", { EX: ttl });
     }
 
     /* Invalidate user cache */
@@ -145,7 +145,11 @@ export const getMe = async (req, res, next) => {
     const user = await User.findById(req.user.id);
     if (!user) return res.status(404).json({ success: false, message: "User not found." });
 
-    await redis.setex(`user:${user._id}`, 3600, JSON.stringify({ id: user._id, name: user.name, email: user.email, role: user.role }));
+    await redis.set(
+      `user:${user._id}`,
+      JSON.stringify({ id: user._id, name: user.name, email: user.email, role: user.role }),
+      { EX: 3600 }
+    );
 
     return res.json({ success: true, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
   } catch (error) {
