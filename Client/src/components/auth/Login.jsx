@@ -112,7 +112,11 @@ const Field = ({ id, label, type = 'text', value, onChange, onBlur, error, dark,
           autoComplete={id}
           className={`w-full bg-transparent px-4 py-3.5 text-sm outline-none placeholder:opacity-50
             ${dark ? 'text-white caret-white' : 'text-black caret-black'}`}
-          style={{ fontFamily: 'var(--font-mono)', letterSpacing: '0.04em' }}
+          style={{
+            fontFamily: 'var(--font-mono)',
+            letterSpacing: '0.04em',
+            '--autofill-text': dark ? '#ffffff' : '#000000'
+          }}
         />
         {rightSlot && <div className="pr-3">{rightSlot}</div>}
       </div>
