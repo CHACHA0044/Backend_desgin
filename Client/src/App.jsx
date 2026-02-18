@@ -43,9 +43,29 @@ const LogoutPage = () => {
   return <Navigate to="/login" replace state={{ loggedOut: true }} />;
 };
 
+/* ══════════════════════════════════════════════════════════════════════
+   AUTH OBSERVER
+   Listens for 401/403 events from API and redirects to login
+   ══════════════════════════════════════════════════════════════════════ */
+const AuthObserver = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const handler = () => {
+      localStorage.removeItem('sbs-token');
+      localStorage.removeItem('sbs-role');
+      localStorage.removeItem('sbs-user');
+      navigate('/login', { replace: true, state: { authRequired: true } });
+    };
+    window.addEventListener('sbs:auth-error', handler);
+    return () => window.removeEventListener('sbs:auth-error', handler);
+  }, [navigate]);
+  return null;
+};
+
 export default function App() {
   return (
     <Router>
+      <AuthObserver />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

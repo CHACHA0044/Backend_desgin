@@ -11,6 +11,10 @@ const headers = (auth = false) => {
 };
 
 const handle = async (res) => {
+  if (res.status === 401 || res.status === 403) {
+    window.dispatchEvent(new CustomEvent('sbs:auth-error'));
+    throw new Error('Authentication required');
+  }
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.message || res.statusText || 'Request failed');
