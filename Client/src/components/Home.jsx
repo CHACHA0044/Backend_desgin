@@ -5,60 +5,6 @@ import { gsap } from 'gsap';
 import { GoArrowUpRight } from 'react-icons/go';
 import CardNav from '../common/CardNav';
 /* ════════════════════════════════════════════════════════════════════════════
-   CUSTOM CURSOR
-   Fix 1: mix-blend-mode:difference makes it always visible (white dot inverts
-          to black on white bg, stays white on dark bg) — no theme dependency.
-   Fix 2: lerp factor 0.35 (was 0.11) = much faster / responsive tracking.
-   Fix 3: @media(pointer:fine) guard — hidden on touch/mobile automatically.
-   ════════════════════════════════════════════════════════════════════════════ */
-const CustomCursor = () => {
-  const cursorRef = useRef(null);
-  const pos = useRef({ x: -100, y: -100 });
-  const curr = useRef({ x: -100, y: -100 });
-  const raf = useRef(null);
-
-  useEffect(() => {
-    // Only attach on pointer:fine (mouse) devices
-    const mq = window.matchMedia('(pointer: fine)');
-    if (!mq.matches) return;
-
-    const onMove = (e) => { pos.current = { x: e.clientX, y: e.clientY }; };
-    const onOver = (e) => {
-      if (e.target.closest('a, button, [role="button"]'))
-        cursorRef.current?.classList.add('hovering');
-    };
-    const onOut = () => cursorRef.current?.classList.remove('hovering');
-
-    window.addEventListener('mousemove', onMove, { passive: true });
-    document.addEventListener('mouseover', onOver);
-    document.addEventListener('mouseout', onOut);
-
-    // lerp = 0.35 → fast & snappy, no perceived lag
-    const LERP = 0.35;
-    const tick = () => {
-      curr.current.x += (pos.current.x - curr.current.x) * LERP;
-      curr.current.y += (pos.current.y - curr.current.y) * LERP;
-      if (cursorRef.current) {
-        cursorRef.current.style.left = `${curr.current.x}px`;
-        cursorRef.current.style.top = `${curr.current.y}px`;
-      }
-      raf.current = requestAnimationFrame(tick);
-    };
-    raf.current = requestAnimationFrame(tick);
-
-    return () => {
-      window.removeEventListener('mousemove', onMove);
-      document.removeEventListener('mouseover', onOver);
-      document.removeEventListener('mouseout', onOut);
-      cancelAnimationFrame(raf.current);
-    };
-  }, []);
-
-  // mix-blend-mode:difference = single white dot, always visible on any bg
-  return <div ref={cursorRef} className="custom-cursor" />;
-};
-
-/* ════════════════════════════════════════════════════════════════════════════
    CARD NAV
    Fix 4a: backdrop overlay (nav-backdrop) with blur + click-outside to close.
    Fix 4b: close on link click, close on backdrop click.
@@ -136,8 +82,8 @@ const FeatureCard = ({ icon, title, desc, delay, dark }) => (
     viewport={{ once: true, margin: '-50px' }}
     transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
     className={`feature-card group relative overflow-hidden rounded-2xl border p-6 ${dark
-        ? 'border-white/8 bg-white/[0.03] hover:border-white/15'
-        : 'border-black/8 bg-black/[0.03] hover:border-black/15'
+      ? 'border-white/8 bg-white/[0.03] hover:border-white/15'
+      : 'border-black/8 bg-black/[0.03] hover:border-black/15'
       }`}
   >
     <div className="mb-4 text-2xl leading-none">{icon}</div>
@@ -190,11 +136,6 @@ export default function Home() {
       <div className="grain-overlay" aria-hidden="true" />
 
       {/* ── Backdrop blur overlay — click outside to close nav ─────────── */}
-
-
-      {/* Custom cursor — always white; mix-blend-mode handles visibility */}
-      <CustomCursor />
-
 
 
       {/* ── Card Nav ────────────────────────────────────────────────────── */}

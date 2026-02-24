@@ -31,52 +31,6 @@ body {
   overflow-x: hidden;
 }
 
-/* ── CURSOR: hide native on desktop only ────────────────────────────────── */
-/* Touch/mobile devices keep their default cursor; only desktop gets custom */
-@media (pointer: fine) {
-  * {
-    cursor: none !important;
-  }
-}
-
-/* ── Custom cursor element ──────────────────────────────────────────────── */
-.custom-cursor {
-  /* hidden by default — shown only on pointer:fine (mouse) devices */
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  /* 12px default; grows on hover */
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99999;
-  /* mix-blend-mode difference so it's ALWAYS visible on any bg */
-  mix-blend-mode: difference;
-  /* white blob that inverts to black on white bg automatically */
-  background: white;
-  transform: translate(-50%, -50%);
-  /* smooth size/opacity transitions only — no position transition (lag) */
-  transition:
-    width 0.18s var(--ease-out-expo),
-    height 0.18s var(--ease-out-expo),
-    opacity 0.15s ease;
-  will-change: left, top;
-}
-
-@media (pointer: fine) {
-  .custom-cursor {
-    display: block;
-  }
-}
-
-.custom-cursor.hovering {
-  width: 36px;
-  height: 36px;
-  opacity: 0.55;
-}
-
 /* ── Scrollbar ──────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar {
   width: 3px;

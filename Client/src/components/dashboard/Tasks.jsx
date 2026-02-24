@@ -6,39 +6,6 @@ import { GoArrowUpRight } from 'react-icons/go';
 import CardNav from '../../common/CardNav';
 import { dishAPI, orderAPI } from '../../api/Api';
 /* ══════════════════════════════════════════════════════════════════════
-   CUSTOM CURSOR
-   ══════════════════════════════════════════════════════════════════════ */
-const CustomCursor = () => {
-  const cursorRef = useRef(null);
-  const pos = useRef({ x: -100, y: -100 });
-  const curr = useRef({ x: -100, y: -100 });
-  const raf = useRef(null);
-  useEffect(() => {
-    const mq = window.matchMedia('(pointer: fine)');
-    if (!mq.matches) return;
-    const onMove = (e) => { pos.current = { x: e.clientX, y: e.clientY }; };
-    const onOver = (e) => { if (e.target.closest('a, button, [role="button"], input')) cursorRef.current?.classList.add('hovering'); };
-    const onOut = () => cursorRef.current?.classList.remove('hovering');
-    window.addEventListener('mousemove', onMove, { passive: true });
-    document.addEventListener('mouseover', onOver);
-    document.addEventListener('mouseout', onOut);
-    const LERP = 0.35;
-    const tick = () => {
-      curr.current.x += (pos.current.x - curr.current.x) * LERP;
-      curr.current.y += (pos.current.y - curr.current.y) * LERP;
-      if (cursorRef.current) {
-        cursorRef.current.style.left = `${curr.current.x}px`;
-        cursorRef.current.style.top = `${curr.current.y}px`;
-      }
-      raf.current = requestAnimationFrame(tick);
-    };
-    raf.current = requestAnimationFrame(tick);
-    return () => { window.removeEventListener('mousemove', onMove); document.removeEventListener('mouseover', onOver); document.removeEventListener('mouseout', onOut); cancelAnimationFrame(raf.current); };
-  }, []);
-  return <div ref={cursorRef} className="custom-cursor" />;
-};
-
-/* ══════════════════════════════════════════════════════════════════════
    CARD NAV
    ══════════════════════════════════════════════════════════════════════ */
 
@@ -407,7 +374,6 @@ export default function Tasks() {
     <div className={`relative min-h-screen overflow-x-hidden transition-colors duration-500 ${bg} ${text}`}>
       <div className="grain-overlay" aria-hidden="true" />
 
-      <CustomCursor />
       <CardNav logoText="SBS" dark={dark} ease="power3.out" onOpenChange={setNavOpen} onToggleTheme={toggleTheme} />
 
       {/* ── MAIN ── */}
